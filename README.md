@@ -1,4 +1,4 @@
-# mozzrella
+# mozzarella
 
 Function style minecraft objects generator.
 
