@@ -5,11 +5,11 @@ package space.maizy.mozzarella
  * See LICENSE.txt for details.
  */
 
-import scala.concurrent.{ Await, Future }
-import scala.concurrent.duration.{ Duration, DurationInt }
-import space.maizy.mozzarella.minecraftclient.MinecraftClient
-import space.maizy.mozzarella.minecraftclient.ArgSyntax._
+import scala.concurrent.Await
+import scala.concurrent.duration.DurationInt
 import org.json4s.native.JsonMethods.{ pretty, render }
+import space.maizy.mozzarella.minecraftclient.ArgSyntax._
+import space.maizy.mozzarella.minecraftclient.MinecraftClient
 import space.maizy.mozzarella.minecraftsdk.{ Block, Materials, Position, World }
 
 object Launcher {
@@ -27,11 +27,11 @@ object Launcher {
 
     val world = new World("world", client)
 
-    val baseBlock = Block(Position(6, 4, 1350), Materials.grass)
+    val baseBlock = Block(Position(6, 4, 1380), Materials.grass)
     val cube10x10 = for (
-      x <- 1 to 10;
-      y <- 1 to 10;
-      z <- 1 to 10
+      x <- 1 to 5;
+      y <- 1 to 5;
+      z <- 1 to 5
     ) yield Block(
       Position(
         baseBlock.position.x + x,
@@ -41,8 +41,8 @@ object Launcher {
       baseBlock.material
     )
 
-    val ready = Future.sequence(cube10x10.map(world.addBlock))
-    Await.result(ready, Duration.Inf)
+    val ready = world.addBlocks(cube10x10.toList)
+    println(Await.result(ready, 1.minute))
 
   }
 }
