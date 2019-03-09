@@ -44,6 +44,16 @@ allprojects {
         classifier 'shadow'
     }
 
+    dependencies {
+        compile "org.scala-lang:scala-library:${scalaVersion}"
+        compile "org.scala-lang:scala-reflect:${scalaVersion}"
+        compile 'ch.qos.logback:logback-classic:1.2.3'
+        compile "com.typesafe.scala-logging:scala-logging_${scalaMajorVersion}:3.7.2"
+        compile "org.typelevel:cats-core_${scalaMajorVersion}:1.1.0"
+        testCompile "org.scalatest:scalatest_${scalaMajorVersion}:3.0.4"
+        testRuntime 'org.pegdown:pegdown:1.4.2'
+    }
+
 }
 
 wrapper {
@@ -60,16 +70,21 @@ project('mozzarella-maze') {
     }
 
     dependencies {
-
-        compile "org.scala-lang:scala-library:${scalaVersion}"
-        compile "org.scala-lang:scala-reflect:${scalaVersion}"
-        compile 'ch.qos.logback:logback-classic:1.2.3'
-        compile "com.typesafe.scala-logging:scala-logging_${scalaMajorVersion}:3.7.2"
         compile "org.dispatchhttp:dispatch-core_${scalaMajorVersion}:0.14.0"
-        compile "org.typelevel:cats-core_${scalaMajorVersion}:1.1.0"
         compile "org.json4s:json4s-native_${scalaMajorVersion}:3.5.4"
-        testCompile "org.scalatest:scalatest_${scalaMajorVersion}:3.0.4"
-        testRuntime 'org.pegdown:pegdown:1.4.2'
     }
 
+}
+
+project('minetest-monitor') {
+    dependencies {
+        compile "org.pcap4j:pcap4j-core:1.7.5"
+        compile "org.pcap4j:pcap4j-packetfactory-static:1.7.5"
+    }
+    mainClassName = 'space.maizy.mozzarella.minetest_monitor.Launcher'
+    jar {
+        manifest {
+            attributes 'Main-Class': mainClassName
+        }
+    }
 }
