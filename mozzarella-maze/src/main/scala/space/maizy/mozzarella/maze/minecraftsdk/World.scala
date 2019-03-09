@@ -1,4 +1,4 @@
-package space.maizy.mozzarella.minecraftsdk
+package space.maizy.mozzarella.maze.minecraftsdk
 
 /**
  * Copyright (c) Nikita Kovaliov, maizy.ru, 2018
@@ -6,8 +6,8 @@ package space.maizy.mozzarella.minecraftsdk
  */
 
 import scala.concurrent.{ ExecutionContext, Future }
-import space.maizy.mozzarella.minecraftclient.{ ApiCall, ApiCallResult, MinecraftClient }
-import space.maizy.mozzarella.minecraftclient.ArgSyntax._
+import space.maizy.mozzarella.maze.minecraftclient.{ ApiCall, ApiCallResult, MinecraftClient }
+import space.maizy.mozzarella.maze.minecraftclient.ArgSyntax._
 
 class World(name: String, minecraftClient: MinecraftClient) {
   def addBlock(block: Block)(implicit ex: ExecutionContext): Future[Boolean] = {

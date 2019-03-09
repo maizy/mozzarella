@@ -1,16 +1,16 @@
-package space.maizy.mozzarella
+package space.maizy.mozzarella.maze
 
 /**
- * Copyright (c) Nikita Kovaliov, maizy.ru, 2018
- * See LICENSE.txt for details.
- */
+  * Copyright (c) Nikita Kovaliov, maizy.space, 2019
+  * See LICENSE.txt for details.
+  */
 
 import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
 import org.json4s.native.JsonMethods.{ pretty, render }
-import space.maizy.mozzarella.minecraftclient.ArgSyntax._
-import space.maizy.mozzarella.minecraftclient.MinecraftClient
-import space.maizy.mozzarella.minecraftsdk.{ Block, Materials, Position, World }
+import space.maizy.mozzarella.maze.minecraftclient.ArgSyntax._
+import space.maizy.mozzarella.maze.minecraftclient.MinecraftClient
+import space.maizy.mozzarella.maze.minecraftsdk.{ Block, Materials, Position, World }
 
 object Launcher {
   def main(args: Array[String]): Unit = {

@@ -1,4 +1,4 @@
-package space.maizy.mozzarella.minecraftsdk
+package space.maizy.mozzarella.maze.minecraftsdk
 
 /**
  * Copyright (c) Nikita Kovaliov, maizy.ru, 2018

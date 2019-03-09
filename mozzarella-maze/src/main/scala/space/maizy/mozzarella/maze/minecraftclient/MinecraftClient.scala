@@ -1,4 +1,4 @@
-package space.maizy.mozzarella.minecraftclient
+package space.maizy.mozzarella.maze.minecraftclient
 
 /**
  * Copyright (c) Nikita Kovaliov, maizy.ru, 2018
