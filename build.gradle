@@ -49,7 +49,7 @@ allprojects {
         compile "org.scala-lang:scala-reflect:${scalaVersion}"
         compile 'ch.qos.logback:logback-classic:1.2.3'
         compile "com.typesafe.scala-logging:scala-logging_${scalaMajorVersion}:3.7.2"
-        compile "org.typelevel:cats-core_${scalaMajorVersion}:1.1.0"
+        compile "org.typelevel:cats-core_${scalaMajorVersion}:1.6.0"
         testCompile "org.scalatest:scalatest_${scalaMajorVersion}:3.0.4"
         testRuntime 'org.pegdown:pegdown:1.4.2'
     }
@@ -76,10 +76,19 @@ project('mozzarella-maze') {
 
 }
 
+project('minetest-protocol') {
+    dependencies {
+        compile "org.scodec:scodec-bits_${scalaMajorVersion}:1.1.6"
+        compile "org.scodec:scodec-core_${scalaMajorVersion}:1.10.3"
+        compile "org.scodec:scodec-cats_${scalaMajorVersion}:0.8.0"
+    }
+}
+
 project('minetest-monitor') {
     dependencies {
         compile "org.pcap4j:pcap4j-core:1.7.5"
         compile "org.pcap4j:pcap4j-packetfactory-static:1.7.5"
+        compile project(':minetest-protocol')
     }
     mainClassName = 'space.maizy.mozzarella.minetest_monitor.Launcher'
     jar {

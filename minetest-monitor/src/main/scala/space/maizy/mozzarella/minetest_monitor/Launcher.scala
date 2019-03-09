@@ -37,7 +37,7 @@ object Launcher extends LazyLogging {
     scala.sys.addShutdownHook {
       logger.info("Stopping ...")
       val ps: PcapStat = handle.getStats
-      logger.info(s"Recived: ${ps.getNumPacketsReceived}")
+      logger.info(s"Received: ${ps.getNumPacketsReceived}")
       logger.info(s"Dropped: ${ps.getNumPacketsDropped}")
       logger.info(s"Dropped by inetface: ${ps.getNumPacketsDroppedByIf}")
     }
