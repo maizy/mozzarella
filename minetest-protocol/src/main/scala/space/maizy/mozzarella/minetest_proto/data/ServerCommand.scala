@@ -1,5 +1,11 @@
 package space.maizy.mozzarella.minetest_proto.data
 
+/**
+ * Copyright (c) Nikita Kovaliov, maizy.space, 2019
+ * See LICENSE.txt for details.
+ */
+
+import scala.language.implicitConversions
 import scodec.bits.ByteVector
 
 /**

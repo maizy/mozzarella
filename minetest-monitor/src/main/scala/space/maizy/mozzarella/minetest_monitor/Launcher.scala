@@ -5,7 +5,7 @@ package space.maizy.mozzarella.minetest_monitor
   * See LICENSE.txt for details.
   */
 
-import java.util.concurrent.Executors
+import java.util.concurrent.TimeoutException
 import com.typesafe.scalalogging.LazyLogging
 import org.pcap4j.core.BpfProgram.BpfCompileMode
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode
@@ -42,8 +42,20 @@ object Launcher extends LazyLogging {
       logger.info(s"Dropped by inetface: ${ps.getNumPacketsDroppedByIf}")
     }
 
-    val pool = Executors.newCachedThreadPool()
-    handle.loop(INF, new MinetestProtoListener(port), pool)
+    // one thread listiner, to preserve order
+    val listener = new MinetestProtoListener(port)
+    while (true) {
+      try {
+        val packet = handle.getNextPacketEx
+        listener.gotPacket(packet)
+      } catch {
+        case e: TimeoutException =>
+      }
+    }
+
+    // more efficient but order is missing
+    /* val pool = Executors.newCachedThreadPool()
+    handle.loop(INF, new MinetestProtoListener(port), pool) */
 
   }
 

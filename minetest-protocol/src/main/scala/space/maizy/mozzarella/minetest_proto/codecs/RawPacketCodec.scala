@@ -3,7 +3,6 @@ package space.maizy.mozzarella.minetest_proto.codecs
 import scodec.Codec
 import scodec.codecs._
 import space.maizy.mozzarella.minetest_proto.RawPacket
-import space.maizy.mozzarella.minetest_proto.data.PacketType
 
 /**
  * Copyright (c) Nikita Kovaliov, maizy.space, 2019
@@ -20,7 +19,7 @@ object RawPacketCodec {
     ("proto_version" | uint32) ::
     ("peer_id" | uint16 ) ::
     ("channel" | uint8 ) ::
-    ("packet_type" | PacketType.packetTypeCodec ) ::
+    ("packet_type" | PacketTypeCodec.packetTypeCodec ) ::
     ("data" | bytes )
   }.as[RawPacket]
 }

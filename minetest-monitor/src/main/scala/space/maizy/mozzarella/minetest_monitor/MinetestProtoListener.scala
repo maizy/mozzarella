@@ -8,16 +8,12 @@ package space.maizy.mozzarella.minetest_monitor
 import com.typesafe.scalalogging.LazyLogging
 import org.pcap4j.core.PacketListener
 import org.pcap4j.packet.{ Packet, UdpPacket }
-import scodec.{ Attempt, Codec, DecodeResult }
+import scodec.Attempt
 import scodec.bits.BitVector
-import space.maizy.mozzarella.minetest_proto.RawPacket
-import space.maizy.mozzarella.minetest_proto.codecs.RawPacketCodec
-import space.maizy.mozzarella.minetest_proto.data.MagicNumbers
+import space.maizy.mozzarella.minetest_proto.Protocol
 
 
 class MinetestProtoListener(val serverPort: Int = 30000) extends PacketListener with LazyLogging {
-
-  import RawPacketCodec._
 
   def describeData(data: Array[Byte]): String = {
     data.map(b => f"$b%02x").mkString(" ")
@@ -35,23 +31,15 @@ class MinetestProtoListener(val serverPort: Int = 30000) extends PacketListener 
         None
       }
 
-      val data = udpPacket.getPayload.getRawData
-      val successfull = mayBeDirection.exists { dir =>
-        Codec.decode[RawPacket](BitVector(data)) match {
-          case Attempt.Successful(DecodeResult(res, _)) =>
-            if(res.protocolVersion == MagicNumbers.protocolVersionInt) {
-              logger.info("{} {}", dir, res)
-              true
-            } else {
-              false
-            }
-          case Attempt.Failure(cause) =>
-            false
+      mayBeDirection.foreach { dir =>
+        val data = udpPacket.getPayload.getRawData
+        val bits = BitVector(data)
+        Protocol.parse(bits) match {
+          case Attempt.Successful(decoderRes) =>
+            logger.info(s"$dir ${decoderRes.value}")
+          case Attempt.Failure(errors) =>
+            logger.warn(s"$dir Unable to parse: $errors, data: ${data.map(p => f"$p%02x").mkString(" ")}")
         }
-      }
-
-      if (!successfull) {
-        logger.warn(data.map(p => f"$p%02x").mkString(" "))
       }
     }
   }
