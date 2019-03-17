@@ -11,4 +11,7 @@ object Printer {
     val parts = vector.foldLeft(List.empty[String]) { (acc, byte) => f"$byte%02x" +: acc }
     parts.reverse.mkString(" ")
   }
+
+  def printAsHex(value: Int): String = printByteVector(ByteVector(value))
+  def printAsHex(value: Long): String = printByteVector(ByteVector(value))
 }

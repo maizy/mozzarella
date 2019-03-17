@@ -9,10 +9,11 @@ import scodec.Codec
 import scodec.codecs._
 import space.maizy.mozzarella.minetest_proto.original.OriginalPacket
 
-/**
- * TODO: parse payload
- */
 object OriginalPacketCodec {
-    implicit val originalPacketCodec: Codec[OriginalPacket] =
-      ("payload" | bytes ).as[OriginalPacket]
+
+  implicit val originalPacketCodec: Codec[OriginalPacket] =
+    {
+      ("command_code" | uint16 ) ::
+      ("payload" | bytes)
+    }.as[OriginalPacket]
 }

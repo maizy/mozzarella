@@ -11,12 +11,14 @@ import scodec.bits.ByteVector
 /**
  * generated from https://github.com/minetest/minetest/blob/master/src/network/networkprotocol.h
  */
-object ClientCommand extends Enumeration {
+object ToClientCommand extends Enumeration {
 
   type Type = Value
 
   protected case class Val(asInt: Int) extends super.Val {
     val asByte: ByteVector = ByteVector(asInt)
+
+    override def toString(): String = super.toString().replace("TOCLIENT_", "")
   }
 
   implicit def valueToVal(x: Value): Val = x.asInstanceOf[Val]
@@ -468,6 +470,6 @@ object ClientCommand extends Enumeration {
 
 
 
-  val index: Map[Int, ClientCommand.Type] = values.map(v => v.asInt -> v).toMap
-  val byteIndex: Map[ByteVector, ClientCommand.Type] = values.map(v => v.asByte -> v).toMap
+  val index: Map[Int, ToClientCommand.Type] = values.map(v => v.asInt -> v).toMap
+  val byteIndex: Map[ByteVector, ToClientCommand.Type] = values.map(v => v.asByte -> v).toMap
 }

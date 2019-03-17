@@ -13,12 +13,10 @@ import space.maizy.mozzarella.minetest_proto.utils.Printer
 
 /**
  * https://github.com/minetest/minetest/blob/master/src/network/connection.cpp, makeOriginalPacket
- *
- * TODO: parse data
  */
-final case class OriginalPacket(data: ByteVector) extends Packet {
+final case class OriginalPacket(commandCode: Int, payload: ByteVector) extends Packet {
   override val packetType: Type = PacketType.Original
 
-  override def toString: String =
-    s"OriginalPacket(${Printer.printByteVector(data)})"
+  override def toString: String = s"OriginalPacket(${Printer.printAsHex(commandCode)}: " +
+    s"${Printer.printByteVector(payload)})"
 }

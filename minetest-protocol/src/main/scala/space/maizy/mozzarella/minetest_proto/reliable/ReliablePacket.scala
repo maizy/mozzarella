@@ -5,19 +5,21 @@ package space.maizy.mozzarella.minetest_proto.reliable
  * See LICENSE.txt for details.
  */
 
-import scodec.bits.ByteVector
 import space.maizy.mozzarella.minetest_proto.Packet
 import space.maizy.mozzarella.minetest_proto.data.PacketType
 import space.maizy.mozzarella.minetest_proto.data.PacketType.Type
-import space.maizy.mozzarella.minetest_proto.utils.Printer
 
 /**
  * https://github.com/minetest/minetest/blob/master/src/network/connection.cpp, makeReliablePacket
  *
  * @param seqNum u16
  */
-final case class ReliablePacket(seqNum: Int, packet: ByteVector) extends Packet {
+final case class ReliablePacket(
+    seqNum: Int,
+    encapsulatedType: PacketType.Type,
+    encapsulatedPacket: Packet) extends Packet {
+
   override val packetType: Type = PacketType.Reliable
 
-  override def toString: String = s"ReliablePacket(#$seqNum, ${Printer.printByteVector(packet)})"
+  override def toString: String = s"ReliablePacket(#$seqNum: $encapsulatedPacket}"
 }

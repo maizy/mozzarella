@@ -9,16 +9,20 @@ import scala.language.implicitConversions
 import scodec.bits.ByteVector
 
 /**
- * generated from https://github.com/minetest/minetest/blob/master/src/network/networkprotocol.h
+ * generated from f
  */
-object ServerCommand extends Enumeration {
+object ToServerCommand extends Enumeration {
 
   type Type = Value
 
   protected case class Val(asInt: Int) extends super.Val {
     val asByte: ByteVector = ByteVector(asInt)
+    override def toString(): String = super.toString().replace("TOSERVER_", "")
   }
+
   implicit def valueToVal(x: Value): Val = x.asInstanceOf[Val]
+
+  val TOSERVER_EMPTY = Val(0x00)
 
   val TOSERVER_INIT = Val(0x02)
   /*
@@ -227,6 +231,6 @@ object ServerCommand extends Enumeration {
   val TOSERVER_NUM_MSG_TYPES = Val(0x53)
 
 
-  val index: Map[Int, ServerCommand.Type] = values.map(v => v.asInt -> v).toMap
-  val byteIndex: Map[ByteVector, ServerCommand.Type] = values.map(v => v.asByte -> v).toMap
+  val index: Map[Int, ToServerCommand.Type] = values.map(v => v.asInt -> v).toMap
+  val byteIndex: Map[ByteVector, ToServerCommand.Type] = values.map(v => v.asByte -> v).toMap
 }
