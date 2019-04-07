@@ -36,8 +36,8 @@ class PrintPackets extends MinetestProtoListener with LazyLogging {
         val data = udpPacket.getPayload.getRawData
         val bits = BitVector(data)
         val parsedRes = dir match {
-          case Direction.ToServer => Protocol.parseToServer(bits)
-          case Direction.ToClient => Protocol.parseToClient(bits)
+          case Direction.ToServer => Protocol.decodeToServer(bits)
+          case Direction.ToClient => Protocol.decodeToClient(bits)
           case _ => throw new RuntimeException("?")
         }
         parsedRes match {

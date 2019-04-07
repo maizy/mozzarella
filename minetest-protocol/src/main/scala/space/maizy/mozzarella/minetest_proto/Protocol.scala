@@ -22,7 +22,7 @@ object Protocol {
   import space.maizy.mozzarella.minetest_proto.codecs.reliable.ReliablePacketCodec._
   import space.maizy.mozzarella.minetest_proto.codecs.original.OriginalPacketCodec._
 
-  def parse(bits: BitVector): Either[List[String], ParsedPacket] = {
+  def decode(bits: BitVector): Either[List[String], PacketOnWire] = {
 
     // TODO: check that all bits are consumed (reminder is empty)
 
@@ -37,23 +37,23 @@ object Protocol {
           case other => Attempt.Failure(Err(s"unknown packet type $other"))
         }
 
-        packetAttempt.map(res => ParsedPacket(rawPacket.channel, rawPacket.peerId, res.value))
+        packetAttempt.map(res => PacketOnWire(rawPacket.channel, rawPacket.peerId, res.value))
       } else {
         Attempt.Failure(Err(s"unsupported procol version ${rawPacket.protocolVersion}"))
       }
     }.toEither.left.map(err => List(err.messageWithContext))
   }
 
-  private def parseAndReplaceOriginalPacket(
+  private def decodeAndReplaceOriginalPacket(
       bits: BitVector,
       replaceF: OriginalPacket => Either[List[String], OriginalPacketWithKnownDirection])
-      : Either[List[String], ParsedPacket] = {
-    parse(bits).flatMap {
-      case parsed @ ParsedPacket(_, _, orig: OriginalPacket) =>
+      : Either[List[String], PacketOnWire] = {
+    decode(bits).flatMap {
+      case parsed @ PacketOnWire(_, _, orig: OriginalPacket) =>
         replaceF(orig).map { withDirection =>
           parsed.copy(packet = withDirection)
         }
-      case parsed @ ParsedPacket(_, _, reliable @ ReliablePacket(_, _, orig: OriginalPacket)) =>
+      case parsed @ PacketOnWire(_, _, reliable @ ReliablePacket(_, _, orig: OriginalPacket)) =>
         replaceF(orig).map { withDirection =>
           parsed.copy(packet = reliable.copy(encapsulatedPacket = withDirection))
         }
@@ -61,11 +61,30 @@ object Protocol {
     }
   }
 
-  def parseToClient(bits: BitVector): Either[List[String], ParsedPacket] =
-    parseAndReplaceOriginalPacket(bits, parseToClientOriginalPacket)
+  def decodeToClient(bits: BitVector): Either[List[String], PacketOnWire] =
+    decodeAndReplaceOriginalPacket(bits, parseToClientOriginalPacket)
 
-  def parseToServer(bits: BitVector): Either[List[String], ParsedPacket] =
-    parseAndReplaceOriginalPacket(bits, parseToServerOriginalPacket)
+  def decodeToServer(bits: BitVector): Either[List[String], PacketOnWire] =
+    decodeAndReplaceOriginalPacket(bits, parseToServerOriginalPacket)
+
+  def encodeToServer(packetOnWire: PacketOnWire): Either[List[String], BitVector] = {
+    val payloadRes = packetOnWire.packet match {
+      case c: ControlPacket => controlPacketCodec.encode(c)
+      case other: Packet => Attempt.Failure(Err(s"unsupported packet type ${other.packetType}"))
+    }
+
+    payloadRes.flatMap { payloadBits =>
+      require(payloadBits.length % 8 == 0)
+      val rawPacket = RawPacket(
+        MagicNumbers.protocolVersionInt.toLong,
+        packetOnWire.peerId,
+        packetOnWire.channel,
+        packetOnWire.packet.packetType,
+        payloadBits.toByteVector
+      )
+      rawPacketCodec.encode(rawPacket)
+    }.toEither.left.map(err => List(err.messageWithContext))
+  }
 
   private def parseToClientOriginalPacket(packet: OriginalPacket): Either[List[String], ToClientOriginalPacket] = {
     ToClientCommand.index.get(packet.commandCode) match {
