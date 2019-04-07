@@ -90,7 +90,7 @@ project('minetest-monitor') {
         compile "org.pcap4j:pcap4j-packetfactory-static:1.7.5"
         compile project(':minetest-protocol')
     }
-    mainClassName = 'space.maizy.mozzarella.minetest_monitor.Launcher'
+    mainClassName = 'space.maizy.mozzarella.minetest_monitor.PrintApp'
     jar {
         manifest {
             attributes 'Main-Class': mainClassName

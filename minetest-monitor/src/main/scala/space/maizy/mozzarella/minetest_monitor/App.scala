@@ -10,16 +10,14 @@ import com.typesafe.scalalogging.LazyLogging
 import org.pcap4j.core.BpfProgram.BpfCompileMode
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode
 import org.pcap4j.core.{ PcapStat, Pcaps }
+import cats.syntax.option._
 
 
-object Launcher extends LazyLogging {
+trait App extends LazyLogging {
 
   val INF: Int = -1
 
-  def main(args: Array[String]): Unit = {
-
-    val interface = args.headOption.getOrElse("lo0")
-    val port = 30000
+  def launch(interface: String, serverPort: Int,  listener: MinetestProtoListener): Unit = {
 
     val nif = Pcaps.getDevByName(interface)
 
@@ -30,7 +28,7 @@ object Launcher extends LazyLogging {
 
     val handle = nif.openLive(snapLen, PromiscuousMode.PROMISCUOUS, timeout)
 
-    val filter = s"udp port $port"
+    val filter = s"udp port $serverPort"
     logger.info("filter: {}", filter)
     handle.setFilter(filter, BpfCompileMode.OPTIMIZE)
 
@@ -42,8 +40,8 @@ object Launcher extends LazyLogging {
       logger.info(s"Dropped by inetface: ${ps.getNumPacketsDroppedByIf}")
     }
 
+    listener.serverPort = serverPort.some
     // one thread listiner, to preserve order
-    val listener = new MinetestProtoListener(port)
     while (true) {
       try {
         val packet = handle.getNextPacketEx
@@ -56,7 +54,5 @@ object Launcher extends LazyLogging {
     // more efficient but order is missing
     /* val pool = Executors.newCachedThreadPool()
     handle.loop(INF, new MinetestProtoListener(port), pool) */
-
   }
-
 }
