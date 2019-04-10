@@ -24,5 +24,5 @@ final case class SplitPacket(seqNum: Int, chunkCount: Int, chunkNum: Int, data: 
   override val packetType: Type = PacketType.Split
 
   override def toString: String =
-    s"SplitPacket(#$seqNum, $chunkNum of $chunkCount, ${Printer.printByteVector(data)})"
+    s"SplitPacket(#$seqNum, $chunkNum of $chunkCount, ${Printer.byteVectorToString(data)})"
 }

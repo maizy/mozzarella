@@ -11,7 +11,7 @@ import scodec.bits._
 class PrinterTest extends FlatSpec with Matchers {
 
   "Printer.byteVector" should "work" in {
-    Printer.printByteVector(hex"ff b0 0b 00") shouldBe "ff b0 0b 00"
+    Printer.byteVectorToString(hex"ff b0 0b 00") shouldBe "ff b0 0b 00"
   }
 
 }

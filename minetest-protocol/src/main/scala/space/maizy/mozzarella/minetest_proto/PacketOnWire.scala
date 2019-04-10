@@ -5,7 +5,8 @@ package space.maizy.mozzarella.minetest_proto
  * See LICENSE.txt for details.
  */
 final case class PacketOnWire(channel: Int, peerId: Int, packet: Packet) {
-  override def toString: String = {
+  override def toString: String = s"PacketOnWire($shortDescription)"
+  def shortDescription: String = {
     val peerStr = if (peerId == 1) {
       "server"
     } else if (peerId == 0) {

@@ -17,6 +17,6 @@ import space.maizy.mozzarella.minetest_proto.utils.Printer
 final case class OriginalPacket(commandCode: Int, payload: ByteVector) extends Packet {
   override val packetType: Type = PacketType.Original
 
-  override def toString: String = s"OriginalPacket(${Printer.printAsHex(commandCode)}: " +
-    s"${Printer.printByteVector(payload)})"
+  override def toString: String = s"OriginalPacket(${Printer.asHex(commandCode)}: " +
+    s"${Printer.byteVectorToString(payload)})"
 }
