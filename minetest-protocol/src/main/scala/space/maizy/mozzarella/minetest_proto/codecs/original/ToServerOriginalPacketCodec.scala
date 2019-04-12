@@ -9,6 +9,8 @@ import cats.syntax.either._
 import scodec.Attempt.{ Failure, Successful }
 import scodec.bits.BitVector
 import scodec.{ Attempt, Codec, DecodeResult, Encoder }
+import scodec.codecs._
+import space.maizy.mozzarella.minetest_proto.codecs.MinetestStringCodec
 import space.maizy.mozzarella.minetest_proto.data.ToServerCommand
 import space.maizy.mozzarella.minetest_proto.original._
 
@@ -21,13 +23,21 @@ object ToServerOriginalPacketCodec {
     (bits: BitVector) => Attempt.Successful(DecodeResult(ToServerEmpty, bits))
   )
 
+  val toServerInitCodec: Codec[ToServerInit] =
+  {
+    ("serializationVersion" | uint8) ::
+    ("compressionMode" | uint16) ::
+    ("minProtoVersion" | uint16) ::
+    ("maxProtoVersion" | uint16) ::
+    ("playerName" | MinetestStringCodec.stdStringCodec)
+  }.as[ToServerInit]
+
   implicit val toServerOriginalPacketEncoder: Encoder[ToServerOriginalPacket] =
     Encoder[ToServerOriginalPacket] { c: ToServerOriginalPacket =>
       val payloadAttempt = c match {
-        case ToServerUnsupported(command, payload) =>
-          Attempt.Successful(payload.toBitVector)
-        case ToServerEmpty =>
-          toServerEmptyCodec.encode(ToServerEmpty)
+        case ToServerUnsupported(command, payload) => Attempt.Successful(payload.toBitVector)
+        case ToServerEmpty => toServerEmptyCodec.encode(ToServerEmpty)
+        case p: ToServerInit => toServerInitCodec.encode(p)
       }
 
       payloadAttempt.flatMap { payloadBits =>
@@ -43,6 +53,7 @@ object ToServerOriginalPacketCodec {
         val bits = packet.payload.toBitVector
         val parsed = command match {
           case ToServerCommand.TOSERVER_EMPTY => toServerEmptyCodec.decode(bits)
+          case ToServerCommand.TOSERVER_INIT => toServerInitCodec.decode(bits)
           case _ =>
             Attempt.Successful(DecodeResult(
               ToServerUnsupported(command, packet.payload),

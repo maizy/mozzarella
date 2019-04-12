@@ -53,7 +53,8 @@ class ProtocolSpec extends FlatSpec with Matchers {
 
   it should "decode & encode some ToServer messages in login - logoff dump" in {
     val supportedOriginalCommands = List(
-      ToServerCommand.TOSERVER_EMPTY
+      ToServerCommand.TOSERVER_EMPTY,
+      ToServerCommand.TOSERVER_INIT
     )
     val chunks = readData("login-logoff-dump.bin")
     var hasErrors = false
