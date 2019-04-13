@@ -1,9 +1,9 @@
 package space.maizy.mozzarella.minetest_monitor
 
 /**
-  * Copyright (c) Nikita Kovaliov, maizy.space, 2019
-  * See LICENSE.txt for details.
-  */
+ * Copyright (c) Nikita Kovaliov, maizy.space, 2019
+ * See LICENSE.txt for details.
+ */
 
 import space.maizy.mozzarella.minetest_monitor.listener.DumpPackets
 

@@ -9,7 +9,7 @@ import java.io.DataInputStream
 import org.scalatest.{ FlatSpec, Matchers }
 import scodec.bits._
 import space.maizy.mozzarella.minetest_proto.data.{ MagicNumbers, PacketType, ToClientCommand, ToServerCommand }
-import space.maizy.mozzarella.minetest_proto.original.{ Direction, OriginalPacket, ToClientOriginalPacket, ToClientUnsupported, ToServerOriginalPacket, ToServerUnsupported }
+import space.maizy.mozzarella.minetest_proto.original._
 import space.maizy.mozzarella.minetest_proto.reliable.ReliablePacket
 import space.maizy.mozzarella.minetest_proto.utils.Dump
 import cats.syntax.option._

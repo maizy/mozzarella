@@ -18,6 +18,6 @@ sealed trait ToClientOriginalPacket extends OriginalPacketWithKnownDirection {
 final case class ToClientUnsupported(override val command: ToClientCommand.Type, payload: ByteVector)
   extends ToClientOriginalPacket {
 
-  override def toString: String = s"ToClientOriginalPacket(" +
-    s"Unsupported($command): ${Printer.byteVectorToString(payload)})"
+  override def toString: String = "ToClientOriginalPacket(" +
+      s"Unsupported($command): ${Printer.byteVectorToString(payload)})"
 }

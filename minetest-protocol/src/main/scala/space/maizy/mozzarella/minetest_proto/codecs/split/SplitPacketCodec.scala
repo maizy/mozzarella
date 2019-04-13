@@ -13,10 +13,10 @@ import space.maizy.mozzarella.minetest_proto.split.SplitPacket
  * TODO: parse payload
  */
 object SplitPacketCodec {
-    implicit val splitPacketCodec: Codec[SplitPacket] = {
-      ("seqnum" | uint16 ) ::
-      ("chunk_count" | uint16 ) ::
-      ("chunk_num" | uint16 ) ::
-      ("payload" | bytes )
-    }.as[SplitPacket]
+  implicit val splitPacketCodec: Codec[SplitPacket] = {
+    ("seqnum" | uint16 ) ::
+    ("chunk_count" | uint16 ) ::
+    ("chunk_num" | uint16 ) ::
+    ("payload" | bytes )
+  }.as[SplitPacket]
 }

@@ -8,6 +8,7 @@ package space.maizy.mozzarella.minetest_proto.codecs.reliable
 import scodec.bits.BitVector
 import scodec.codecs._
 import scodec.{ Attempt, Codec, Err }
+import space.maizy.mozzarella.minetest_proto.Packet
 import space.maizy.mozzarella.minetest_proto.codecs.PacketTypeCodec
 import space.maizy.mozzarella.minetest_proto.control.ControlPacket
 import space.maizy.mozzarella.minetest_proto.data.PacketType
@@ -43,7 +44,7 @@ object ReliablePacketCodec {
             case enc: ToServerOriginalPacket => toServerOriginalPacketEncoder.encode(enc)
             case enc: ToClientOriginalPacket => toClientOriginalPacketEncoder.encode(enc)
             case enc: SplitPacket => splitPacketCodec.encode(enc)
-            case other => Attempt.Failure(Err(
+            case other: Packet => Attempt.Failure(Err(
               s"unexpected encapsulated packet ${other.packetType} (${other.getClass.getName}})"
             ))
           }
@@ -62,7 +63,7 @@ object ReliablePacketCodec {
         }
         .mapErr { _.pushContext("encapsulated packet") }
         .combine { case ((seqNum, packetType), encPacket) =>
-            ReliablePacket(seqNum, packetType, encPacket)
+          ReliablePacket(seqNum, packetType, encPacket)
         }
 
 

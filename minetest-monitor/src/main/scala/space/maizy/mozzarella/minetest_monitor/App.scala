@@ -1,9 +1,9 @@
 package space.maizy.mozzarella.minetest_monitor
 
 /**
-  * Copyright (c) Nikita Kovaliov, maizy.space, 2019
-  * See LICENSE.txt for details.
-  */
+ * Copyright (c) Nikita Kovaliov, maizy.space, 2019
+ * See LICENSE.txt for details.
+ */
 
 import java.util.concurrent.TimeoutException
 import com.typesafe.scalalogging.LazyLogging

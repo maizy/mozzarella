@@ -8,10 +8,10 @@ package space.maizy.mozzarella.minetest_proto
 import cats.syntax.either._
 import scodec.bits.BitVector
 import scodec.{ Attempt, DecodeResult, Err }
-import space.maizy.mozzarella.minetest_proto.codecs.original.{ ToClientOriginalPacketCodec, ToServerOriginalPacketCodec }
+import space.maizy.mozzarella.minetest_proto.codecs.original._
 import space.maizy.mozzarella.minetest_proto.control.ControlPacket
 import space.maizy.mozzarella.minetest_proto.data.{ MagicNumbers, PacketType }
-import space.maizy.mozzarella.minetest_proto.original.{ OriginalPacket, OriginalPacketWithKnownDirection, ToClientOriginalPacket, ToServerOriginalPacket }
+import space.maizy.mozzarella.minetest_proto.original._
 import space.maizy.mozzarella.minetest_proto.reliable.ReliablePacket
 import space.maizy.mozzarella.minetest_proto.split.SplitPacket
 
@@ -34,7 +34,7 @@ object Protocol {
           case PacketType.Reliable => reliablePacketCodec.decode(rawPacket.data.bits)
           case PacketType.Original => originalPacketCodec.decode(rawPacket.data.bits)
           case PacketType.Split => splitPacketCodec.decode(rawPacket.data.bits)
-          case other => Attempt.Failure(Err(s"unknown packet type $other"))
+          case other: PacketType.Type => Attempt.Failure(Err(s"unknown packet type $other"))
         }
         packetAttempt.flatMap {
           case DecodeResult(_, remainder) if remainder.nonEmpty =>
@@ -61,7 +61,7 @@ object Protocol {
         replaceF(orig).map { withDirection =>
           parsed.copy(packet = reliable.copy(encapsulatedPacket = withDirection))
         }
-      case other => other.asRight
+      case other: PacketOnWire => other.asRight
     }
   }
 

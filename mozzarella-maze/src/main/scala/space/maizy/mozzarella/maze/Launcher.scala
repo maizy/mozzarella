@@ -1,9 +1,9 @@
 package space.maizy.mozzarella.maze
 
 /**
-  * Copyright (c) Nikita Kovaliov, maizy.space, 2019
-  * See LICENSE.txt for details.
-  */
+ * Copyright (c) Nikita Kovaliov, maizy.space, 2019
+ * See LICENSE.txt for details.
+ */
 
 import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt

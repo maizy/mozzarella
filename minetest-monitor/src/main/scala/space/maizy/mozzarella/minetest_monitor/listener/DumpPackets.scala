@@ -1,9 +1,9 @@
 package space.maizy.mozzarella.minetest_monitor.listener
 
 /**
-  * Copyright (c) Nikita Kovaliov, maizy.space, 2019
-  * See LICENSE.txt for details.
-  */
+ * Copyright (c) Nikita Kovaliov, maizy.space, 2019
+ * See LICENSE.txt for details.
+ */
 
 import java.io.{ DataOutputStream, FileOutputStream }
 import com.typesafe.scalalogging.LazyLogging
@@ -21,7 +21,7 @@ class DumpPackets(dumpPath: String) extends MinetestProtoListener with LazyLoggi
     data.map(b => f"$b%02x").mkString(" ")
   }
 
-  override def gotPacket(packet: Packet) {
+  override def gotPacket(packet: Packet): Unit = {
     logger.trace("packet: {}", packet)
     Option(packet.get(classOf[UdpPacket])).foreach { udpPacket =>
       val header = udpPacket.getHeader

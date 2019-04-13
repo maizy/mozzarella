@@ -3,9 +3,9 @@ package space.maizy.mozzarella.minetest_monitor
 import space.maizy.mozzarella.minetest_monitor.listener.PrintPackets
 
 /**
-  * Copyright (c) Nikita Kovaliov, maizy.space, 2019
-  * See LICENSE.txt for details.
-  */
+ * Copyright (c) Nikita Kovaliov, maizy.space, 2019
+ * See LICENSE.txt for details.
+ */
 
 
 object PrintApp extends App {

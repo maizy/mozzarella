@@ -18,16 +18,20 @@ final case class ApiCall(method: String, arguments: List[Argument])
 final case class ApiCallResult(call: ApiCall, result: Either[NonEmptyList[String], JObject])
 
 class MinecraftClient(
-  jsonapiBaseUrl: String,
-  username: String,
-  password: String
-) {
+    jsonapiBaseUrl: String,
+    username: String,
+    password: String) {
+
   private val httpClient: Http = Http.default
 
   // TODO: multi actions requests
 
-  def callMethod(methodName: String, arguments: List[Argument])
-                (implicit ec: ExecutionContext): Future[Either[NonEmptyList[String], JValue]] = {
+  def callMethod(
+      methodName: String,
+      arguments: List[Argument])(
+      implicit ec: ExecutionContext)
+      : Future[Either[NonEmptyList[String], JValue]] = {
+
     val payload = JArray(List(buildCall(methodName, arguments)))
     val request = buildRequest(payload)
 
@@ -42,7 +46,7 @@ class MinecraftClient(
           }
 
         // TODO: error object, parse error body
-        case i =>
+        case i: Int =>
           NonEmptyList.of(s"Error in http request. Status code: $i.\n${resp.getResponseBody}}").asLeft
       }
     }
@@ -67,7 +71,8 @@ class MinecraftClient(
             case Some(results: JArray) =>
               val returnedResults = results.arr
                 .collect {
-                  case result: JObject if result.obj.exists(_._1 == "tag") &&
+                  case result: JObject
+                    if result.obj.exists(_._1 == "tag") &&
                       result.obj.find(_._1 == "tag").get._2.isInstanceOf[JString] =>
                     val id = result.obj.find(_._1 == "tag").get._2.asInstanceOf[JString].s
                     // TODO: parse operation result
@@ -89,7 +94,7 @@ class MinecraftClient(
           }
 
         // TODO: error object, parse error body
-        case i =>
+        case i: Int =>
           val error = NonEmptyList.of(s"Error in http request. Status code: $i.\n${resp.getResponseBody}}").asLeft
           calls.map(c => ApiCallResult(c, error))
       }

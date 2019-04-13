@@ -22,6 +22,7 @@ object ToServerCommand extends Enumeration {
 
   implicit def valueToVal(x: Value): Val = x.asInstanceOf[Val]
 
+  // scalastyle:off indentation
   val TOSERVER_EMPTY = Val(0x00)
 
   val TOSERVER_INIT = Val(0x02)

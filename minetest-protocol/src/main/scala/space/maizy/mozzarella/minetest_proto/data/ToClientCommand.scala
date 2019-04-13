@@ -23,6 +23,7 @@ object ToClientCommand extends Enumeration {
 
   implicit def valueToVal(x: Value): Val = x.asInstanceOf[Val]
 
+  // scalastyle:off indentation
   val TOCLIENT_HELLO = Val(0x02)
   /*
       Sent after TOSERVER_INIT.
@@ -58,7 +59,8 @@ object ToClientCommand extends Enumeration {
 
   val TOCLIENT_INIT_LEGACY = Val(0x10) // Obsolete
 
-  val TOCLIENT_BLOCKDATA = Val(0x20) //TODO: Multiple blocks
+  val TOCLIENT_BLOCKDATA = Val(0x20) // TODO: Multiple blocks
+
   val TOCLIENT_ADDNODE = Val(0x21)
   /*
       v3s16 position

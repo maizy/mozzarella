@@ -1,3 +1,12 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'org.github.ngbinh.scalastyle:gradle-scalastyle-plugin_2.11:1.0.1'
+  }
+}
+
 plugins {
   id 'java'
   id 'maven'
@@ -17,42 +26,54 @@ ext {
 }
 
 allprojects {
-    apply plugin: 'java'
-    apply plugin: 'scala'
-    apply plugin: 'application'
-    apply plugin: 'com.github.maiflai.scalatest'
-    apply plugin: 'com.github.johnrengelman.shadow'
+  apply plugin: 'java'
+  apply plugin: 'scala'
+  apply plugin: 'scalaStyle'
+  apply plugin: 'application'
+  apply plugin: 'com.github.maiflai.scalatest'
+  apply plugin: 'com.github.johnrengelman.shadow'
 
-    repositories {
-        mavenCentral()
-    }
+  repositories {
+    mavenCentral()
+  }
 
-    tasks.withType(ScalaCompile) {
-        scalaCompileOptions.additionalParameters = [
-                '-Xlint:_',
-                '-feature',
-                '-Xfatal-warnings',
-                '-Ywarn-dead-code',
-                '-Ywarn-inaccessible',
-                '-Ywarn-infer-any',
-                '-Ywarn-nullary-override',
-                '-Ywarn-nullary-unit',
-                '-Ywarn-numeric-widen'
-        ]
-    }
-    shadowJar {
-        classifier 'shadow'
-    }
+  tasks.withType(ScalaCompile) {
+    scalaCompileOptions.additionalParameters = [
+        '-Xlint:_',
+        '-feature',
+        '-Xfatal-warnings',
+        '-Ywarn-dead-code',
+        '-Ywarn-inaccessible',
+        '-Ywarn-infer-any',
+        '-Ywarn-nullary-override',
+        '-Ywarn-nullary-unit',
+        '-Ywarn-numeric-widen'
+    ]
+  }
+  shadowJar {
+    classifier 'shadow'
+  }
 
-    dependencies {
-        compile "org.scala-lang:scala-library:${scalaVersion}"
-        compile "org.scala-lang:scala-reflect:${scalaVersion}"
-        compile 'ch.qos.logback:logback-classic:1.2.3'
-        compile "com.typesafe.scala-logging:scala-logging_${scalaMajorVersion}:3.7.2"
-        compile "org.typelevel:cats-core_${scalaMajorVersion}:1.6.0"
-        testCompile "org.scalatest:scalatest_${scalaMajorVersion}:3.0.4"
-        testRuntime 'org.pegdown:pegdown:1.4.2'
-    }
+  dependencies {
+    compile "org.scala-lang:scala-library:${scalaVersion}"
+    compile "org.scala-lang:scala-reflect:${scalaVersion}"
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile "com.typesafe.scala-logging:scala-logging_${scalaMajorVersion}:3.7.2"
+    compile "org.typelevel:cats-core_${scalaMajorVersion}:1.6.0"
+    testCompile "org.scalatest:scalatest_${scalaMajorVersion}:3.0.4"
+    testRuntime 'org.pegdown:pegdown:1.4.2'
+  }
+
+  scalaStyle {
+    configLocation = "$rootProject.projectDir/scalastyle-config.xml"
+    includeTestSourceDirectory = true
+    source = 'src/main/scala'
+    testSource = 'src/test/scala'
+  }
+  
+  test {
+    dependsOn scalaStyle
+  }
 
 }
 
@@ -62,38 +83,38 @@ wrapper {
 }
 
 project('mozzarella-maze') {
-    mainClassName = 'space.maizy.mozzarella.maze.Launcher'
-    jar {
-        manifest {
-            attributes 'Main-Class': mainClassName
-        }
+  mainClassName = 'space.maizy.mozzarella.maze.Launcher'
+  jar {
+    manifest {
+      attributes 'Main-Class': mainClassName
     }
+  }
 
-    dependencies {
-        compile "org.dispatchhttp:dispatch-core_${scalaMajorVersion}:0.14.0"
-        compile "org.json4s:json4s-native_${scalaMajorVersion}:3.5.4"
-    }
+  dependencies {
+    compile "org.dispatchhttp:dispatch-core_${scalaMajorVersion}:0.14.0"
+    compile "org.json4s:json4s-native_${scalaMajorVersion}:3.5.4"
+  }
 
 }
 
 project('minetest-protocol') {
-    dependencies {
-        compile "org.scodec:scodec-bits_${scalaMajorVersion}:1.1.6"
-        compile "org.scodec:scodec-core_${scalaMajorVersion}:1.10.3"
-        compile "org.scodec:scodec-cats_${scalaMajorVersion}:0.8.0"
-    }
+  dependencies {
+    compile "org.scodec:scodec-bits_${scalaMajorVersion}:1.1.6"
+    compile "org.scodec:scodec-core_${scalaMajorVersion}:1.10.3"
+    compile "org.scodec:scodec-cats_${scalaMajorVersion}:0.8.0"
+  }
 }
 
 project('minetest-monitor') {
-    dependencies {
-        compile "org.pcap4j:pcap4j-core:1.7.5"
-        compile "org.pcap4j:pcap4j-packetfactory-static:1.7.5"
-        compile project(':minetest-protocol')
+  dependencies {
+    compile "org.pcap4j:pcap4j-core:1.7.5"
+    compile "org.pcap4j:pcap4j-packetfactory-static:1.7.5"
+    compile project(':minetest-protocol')
+  }
+  mainClassName = 'space.maizy.mozzarella.minetest_monitor.PrintApp'
+  jar {
+    manifest {
+      attributes 'Main-Class': mainClassName
     }
-    mainClassName = 'space.maizy.mozzarella.minetest_monitor.PrintApp'
-    jar {
-        manifest {
-            attributes 'Main-Class': mainClassName
-        }
-    }
+  }
 }

@@ -18,8 +18,6 @@ final case class ReliablePacket(
     seqNum: Int,
     encapsulatedType: PacketType.Type,
     encapsulatedPacket: Packet) extends Packet {
-
+  override def toString: String = s"ReliablePacket(#$seqNum: $encapsulatedPacket)"
   override val packetType: Type = PacketType.Reliable
-
-  override def toString: String = s"ReliablePacket(#$seqNum: $encapsulatedPacket}"
 }
