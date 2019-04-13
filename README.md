@@ -1,19 +1,41 @@
 # mozzarella
 
-Function style minecraft objects generator.
+Function style minetest objects generator.
 
 ## How To
 
 _TODO_
 
-## Additional requirements
+## Minetest monitor
 
-* Spigot server
-* Spigot server plugings:
-  * JSONAPI, and its requirements:
-  * ProtocolLib
-  * Vault
-* Minecraft client
+Install libpcap:
+
+```
+brew install libpcap
+```
+
+or 
+
+```
+yum install libpcap-devel
+```
+
+or 
+
+```
+apt-get install libpcap-dev
+```
+
+Run monitor:
+
+```
+./gradlew minetest-monitor:run
+```
+
+
+Start a minetest server at localhost:30000.
+
+Start a minetest client & connect to the local server.
 
 ## License
 
