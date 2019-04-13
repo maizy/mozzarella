@@ -29,9 +29,7 @@ allprojects {
   apply plugin: 'java'
   apply plugin: 'scala'
   apply plugin: 'scalaStyle'
-  apply plugin: 'application'
   apply plugin: 'com.github.maiflai.scalatest'
-  apply plugin: 'com.github.johnrengelman.shadow'
 
   repositories {
     mavenCentral()
@@ -49,9 +47,6 @@ allprojects {
         '-Ywarn-nullary-unit',
         '-Ywarn-numeric-widen'
     ]
-  }
-  shadowJar {
-    classifier 'shadow'
   }
 
   dependencies {
@@ -91,6 +86,9 @@ project('minetest-protocol') {
 }
 
 project('minetest-monitor') {
+  apply plugin: 'application'
+  apply plugin: 'com.github.johnrengelman.shadow'
+
   dependencies {
     compile "org.pcap4j:pcap4j-core:1.7.5"
     compile "org.pcap4j:pcap4j-packetfactory-static:1.7.5"
@@ -101,5 +99,9 @@ project('minetest-monitor') {
     manifest {
       attributes 'Main-Class': mainClassName
     }
+  }
+
+  shadowJar {
+    classifier 'shadow'
   }
 }
