@@ -1,20 +1,10 @@
 # mozzarella
 
-Function style minetest/minecraft objects generator.
+Function style minetest objects generator.
 
 ## How To
 
 _TODO_
-
-## Additional minecraft requirements
-
-* Spigot server
-* Spigot server plugings:
-  * JSONAPI, and its requirements:
-  * ProtocolLib
-  * Vault
-* Minecraft client
-
 
 ## Minetest monitor
 

@@ -82,21 +82,6 @@ wrapper {
   distributionType = 'all'
 }
 
-project('mozzarella-maze') {
-  mainClassName = 'space.maizy.mozzarella.maze.Launcher'
-  jar {
-    manifest {
-      attributes 'Main-Class': mainClassName
-    }
-  }
-
-  dependencies {
-    compile "org.dispatchhttp:dispatch-core_${scalaMajorVersion}:0.14.0"
-    compile "org.json4s:json4s-native_${scalaMajorVersion}:3.5.4"
-  }
-
-}
-
 project('minetest-protocol') {
   dependencies {
     compile "org.scodec:scodec-bits_${scalaMajorVersion}:1.1.6"

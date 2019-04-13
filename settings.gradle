@@ -1,3 +1,2 @@
-include 'mozzarella-maze'
 include 'minetest-protocol'
 include 'minetest-monitor'
