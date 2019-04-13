@@ -1,5 +1,7 @@
 # mozzarella
 
+[![Build Status](https://travis-ci.org/maizy/mozzarella.svg?branch=master)](https://travis-ci.org/maizy/mozzarella)
+
 Function style minetest objects generator.
 
 ## How To
