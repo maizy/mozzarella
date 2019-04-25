@@ -8,7 +8,7 @@ package space.maizy.mozzarella.minetest_proto.control
 sealed trait ControlPayload
 
 /**
- * https://github.com/minetest/minetest/blob/master/src/network/connection.h
+ * https://github.com/minetest/minetest/blob/5.0.1/src/network/connection.h
  *
  * @param seqNum u16
  */
@@ -17,7 +17,7 @@ final case class ControlAck(seqNum: Int) extends ControlPayload {
 }
 
 /**
- * https://github.com/minetest/minetest/blob/master/src/network/connection.h
+ * https://github.com/minetest/minetest/blob/5.0.1/src/network/connection.h
  *
  * @param newPeerId u16
  */

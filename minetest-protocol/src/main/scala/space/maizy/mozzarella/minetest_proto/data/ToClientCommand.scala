@@ -9,7 +9,7 @@ import scala.language.implicitConversions
 import scodec.bits.ByteVector
 
 /**
- * generated from https://github.com/minetest/minetest/blob/master/src/network/networkprotocol.h
+ * generated from https://github.com/minetest/minetest/blob/5.0.1/src/network/networkprotocol.h
  */
 object ToClientCommand extends Enumeration {
 

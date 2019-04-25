@@ -12,7 +12,7 @@ import space.maizy.mozzarella.minetest_proto.data.PacketType.Type
 import space.maizy.mozzarella.minetest_proto.utils.Printer
 
 /**
- * https://github.com/minetest/minetest/blob/master/src/network/connection.cpp, makeOriginalPacket
+ * https://github.com/minetest/minetest/blob/5.0.1/src/network/connection.cpp, makeOriginalPacket
  */
 final case class OriginalPacket(commandCode: Int, payload: ByteVector) extends Packet {
   override val packetType: Type = PacketType.Original

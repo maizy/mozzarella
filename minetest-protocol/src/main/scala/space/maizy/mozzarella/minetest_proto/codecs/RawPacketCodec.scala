@@ -12,7 +12,7 @@ import space.maizy.mozzarella.minetest_proto.RawPacket
 /**
  * https://dev.minetest.net/Network_Protocol
  * https://github.com/minetest/minetest/blob/master/doc/protocol.txt
- * https://github.com/minetest/minetest/blob/master/src/network/connection.cpp
+ * https://github.com/minetest/minetest/blob/5.0.1/src/network/connection.cpp
  */
 object RawPacketCodec {
   implicit val rawPacketCodec: Codec[RawPacket] = {

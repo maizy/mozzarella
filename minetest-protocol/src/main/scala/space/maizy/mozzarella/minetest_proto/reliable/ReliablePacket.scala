@@ -10,7 +10,7 @@ import space.maizy.mozzarella.minetest_proto.data.PacketType
 import space.maizy.mozzarella.minetest_proto.data.PacketType.Type
 
 /**
- * https://github.com/minetest/minetest/blob/master/src/network/connection.cpp, makeReliablePacket
+ * https://github.com/minetest/minetest/blob/5.0.1/src/network/connection.cpp, makeReliablePacket
  *
  * @param seqNum u16
  */

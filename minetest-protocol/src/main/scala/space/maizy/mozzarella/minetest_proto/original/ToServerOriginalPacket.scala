@@ -7,7 +7,6 @@ package space.maizy.mozzarella.minetest_proto.original
 
 import scodec.bits.ByteVector
 import space.maizy.mozzarella.minetest_proto.data.ToServerCommand
-import space.maizy.mozzarella.minetest_proto.data.ToServerCommand.Type
 import space.maizy.mozzarella.minetest_proto.utils.Printer
 
 sealed trait ToServerOriginalPacket extends OriginalPacketWithKnownDirection {
@@ -25,7 +24,7 @@ final case class ToServerUnsupported(override val command: ToServerCommand.Type,
 }
 
 object ToServerEmpty extends ToServerOriginalPacket {
-  override val command: Type = ToServerCommand.TOSERVER_EMPTY
+  override val command: ToServerCommand.Type = ToServerCommand.TOSERVER_EMPTY
 }
 
 /**
@@ -44,7 +43,7 @@ final case class ToServerInit(
     maxProtoVersion: Int,
     playerName: String
 ) extends ToServerOriginalPacket {
-  override val command: Type = ToServerCommand.TOSERVER_INIT
+  override val command: ToServerCommand.Type = ToServerCommand.TOSERVER_INIT
 
   override def toString: String = "ToServerInit(" +
       s"serializationVersion: $serializationVersion, minProto: $minProtoVersion, maxProto: $maxProtoVersion, " +

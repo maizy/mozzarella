@@ -9,7 +9,7 @@ import scala.language.implicitConversions
 import scodec.bits.ByteVector
 
 /**
- * https://github.com/minetest/minetest/blob/master/src/network/connection.h
+ * https://github.com/minetest/minetest/blob/5.0.1/src/network/connection.h
  * size: u8
  */
 object PacketType extends Enumeration {

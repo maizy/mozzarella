@@ -10,8 +10,8 @@ import space.maizy.mozzarella.minetest_proto.data.ControlType
 import space.maizy.mozzarella.minetest_proto.data.PacketType
 
 /**
- * https://github.com/minetest/minetest/blob/master/src/network/connection.h
- * https://github.com/minetest/minetest/blob/master/src/network/connectionthreads.cpp
+ * https://github.com/minetest/minetest/blob/5.0.1/src/network/connection.h
+ * https://github.com/minetest/minetest/blob/5.0.1/src/network/connectionthreads.cpp
  */
 final case class ControlPacket(controlType: ControlType.Type, payload: ControlPayload) extends Packet {
 

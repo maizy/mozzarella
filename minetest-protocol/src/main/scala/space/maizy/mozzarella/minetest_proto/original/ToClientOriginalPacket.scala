@@ -21,3 +21,27 @@ final case class ToClientUnsupported(override val command: ToClientCommand.Type,
   override def toString: String = "ToClientOriginalPacket(" +
       s"Unsupported($command): ${Printer.byteVectorToString(payload)})"
 }
+
+/**
+ * https://github.com/minetest/minetest/blob/5.0.1/src/network/serverpackethandler.cpp -
+ *    handleCommand_Init
+ *
+ * @param serializationVersion - u8
+ * @param compressionMode - u16, unused
+ * @param protoVersion - u16
+ * @param legacyPlayerNameCasing - std::string
+ */
+final case class ToClientHello(
+    serializationVersion: Int,
+    compressionMode: Int,
+    protoVersion: Int,
+    // TODO: parse bit flags: serverpackethandler.cpp - AuthMechanism
+    allowedAuthMechanism: Long,
+    legacyPlayerNameCasing: String
+) extends ToClientOriginalPacket {
+  override val command: ToClientCommand.Type = ToClientCommand.TOCLIENT_HELLO
+
+  override def toString: String = s"ToClientHello(serializationVersion: $serializationVersion," +
+    s"compressionMode: $compressionMode, proto: $protoVersion, allowedAuthMechanism: $allowedAuthMechanism, " +
+    s"legacyPlayerNameCasing: $legacyPlayerNameCasing)"
+}
