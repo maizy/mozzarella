@@ -1,2 +1,4 @@
 include 'minetest-protocol'
 include 'minetest-monitor'
+include 'minetest-client'
+include 'minetest-test-app'

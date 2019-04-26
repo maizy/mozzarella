@@ -14,7 +14,7 @@ object AuthMechanism extends Enumeration {
   type Type = Value
 
   protected case class Val(mask: Int) extends super.Val {
-    def asBits: BitVector = uint32.encode(mask).require
+    def asBits: BitVector = uint32.encode(mask.toLong).require
   }
 
   implicit def valueToVal(x: Value): Val = x.asInstanceOf[Val]
